@@ -123,7 +123,7 @@ class ResNet(nn.Module):
         #self.classifier = nn.Sequential(
         #    nn.Conv2d(2048, 256, kernel_size=2, stride=1))
 
-        self.avgpool = nn.AvgPool2d(14)
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc1 = nn.Linear(512 * block.expansion, num_classes)
 
         for m in self.modules():
