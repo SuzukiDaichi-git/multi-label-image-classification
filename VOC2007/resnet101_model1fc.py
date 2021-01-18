@@ -112,44 +112,7 @@ image_datasets_test = VocDataset('./classification_test.csv',
                                  './VOCdevkit/VOC2007/JPEGImages/', data_transforms['test'])
 dataloaders_test = torch.utils.data.DataLoader(image_datasets_test,batch_size=bs, shuffle=False)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-######################################################################
-# Mixup data for data augmentation
-# ^^^^^^^^^^^^^^^^^^^^^^
-# https://github.com/hongyi-zhang/mixup/blob/master/cifar/utils.py
-def mixup_data(x,y,use_cuda=True):
-    batch_size = x.size()[0]
-    if use_cuda:
-        index = torch.randperm(batch_size).cuda()
-    else:
-        index = torch.randperm(batch_size)
-    
-    mixed_x = 0.5*x + 0.5*x[index,:]
-    mixed_y = (y + y[index,:])>0
-    mixed_y = mixed_y.float()
-    return torch.cat((x,mixed_x),0), torch.cat((y,mixed_y),0)
 
-def mixup_data2(x,y,use_cuda=True):
-    batch_size = x.size()[0]
-    if use_cuda:
-        index = torch.randperm(batch_size).cuda()
-    else:
-        index = torch.randperm(batch_size)
-    
-    mixed_x = 0.5*x + 0.5*x[index,:]
-    mixed_y = y
-    return torch.cat((x,mixed_x),0), torch.cat((y,y),0)
-
-def mixup_data3(x,y,use_cuda=True):
-    batch_size = x.size()[0]
-    if use_cuda:
-        index = torch.randperm(batch_size).cuda()
-    else:
-        index = torch.randperm(batch_size)
-    
-    mixed_x = 0.5*x + 0.5*x[index,:]
-    mixed_y = (y + y[index,:])>0
-    mixed_y = mixed_y.float()
-    return mixed_x, mixed_y
 
 
 def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
